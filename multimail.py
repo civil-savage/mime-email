@@ -6,10 +6,10 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEImage import MIMEImage
 
-parser = argparse.ArgumentParser(description='Builds an multi-part html email')
+parser = argparse.ArgumentParser(description='Builds an multi-part html email.')
 parser.add_argument('html_file', action="store", help='A HMTL file that will become the HTML portion the email')
 parser.add_argument('text_file', action="store", help='A text file that will become the text portion of the email')
-parser.add_argument('-i', action="append", help='adds images to the email')
+parser.add_argument('-i' , '--images', action="append", help='adds images to the email')
 args = parser.parse_args()
 
 HTML_FILE = args.html_file
