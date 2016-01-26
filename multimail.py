@@ -1,47 +1,41 @@
 #!/usr/local/bin/python
 
-import smtplib
 import argparse
-from jinja2 import Environment, FileSystemLoader
-from email.MIMEMultipart import MIMEMultipart
 import os
+from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEImage import MIMEImage
-from PIL import Image
-from base64 import b64encode
 
+parser = argparse.ArgumentParser(description='Builds an multi-part html email')
+parser.add_argument('html_file', action="store", help='A HMTL file that will become the HTML portion the email')
+parser.add_argument('text_file', action="store", help='A text file that will become the text portion of the email')
+parser.add_argument('-i', action="append", help='adds images to the email')
+args = parser.parse_args()
 
-
-IMAGE_DIR="./images"
+HTML_FILE = args.html_file
+TEXT_FILE = args.text_file
+IMAGES    = args.i
 
 def main():
-    images = os.listdir(IMAGE_DIR)
-    encoded_images = {}
     msgRoot = MIMEMultipart('alternative')
     msgRoot.preamble = 'This is a multi-part message in MIME format.'
-    with open('text.txt', 'r') as src_text:
-        text = text.read()
-    with open('email.html','r') as src_html:
-        html = src_html.read()
+    with open(TEXT_FILE, 'r') as txt_f:
+        text = txt_f.read()
+    with open(HTML_FILE,'r') as html_f:
+        html = html_f.read()
     msgRoot.attach(MIMEText(text))
-    if not images:
+    if not IMAGES:
         msgRoot.attach(MIMEText(html, 'html'))
     else:
         msgRelated = MIMEMultipart('related')
         msgRelated.attach(MIMEText(html, 'html')) 
-        for image in images: 
+        for image in IMAGES: 
             with open(image, 'rb') as img: 
-                byte_data = img.read() # This needs to get sorted out
-                msgImage = MIMEImage(byte_data)
-                msgImage.add_header('Content-ID', image)
+                msgImage = MIMEImage(img.read())
+                msgImage.add_header('Content-ID', os.path.split(image)[1]) ## clean up to remove the folder location in the for cid
                 msgRelated.attach(msgImage)        
-                b64 = b64encode(byte_data)
-                encoded_images[image]=b64
         msgRoot.attach(msgRelated)
-    print(msgRoot.as_string())
-
-    
-
+    print(msgRoot.as_string()) 
 
 
 if __name__ == "__main__":
