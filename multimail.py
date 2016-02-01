@@ -44,11 +44,11 @@ def main():
                 msgImage.add_header('Content-ID', os.path.split(image)[1]) ## clean up to remove the folder location in the for cid
                 msgRelated.attach(msgImage)        
         msgRoot.attach(msgRelated)
-        if SEND:
-            smtp = smtplib.SMTP('localhost')
-            smtp.sendmail(SEND[0], SEND[1], msgRoot.as_string())
-            smtp.quit()
-        print(msgRoot.as_string()) 
+    if SEND:
+        smtp = smtplib.SMTP('localhost')
+        smtp.sendmail(SEND[0], SEND[1], msgRoot.as_string())
+        smtp.quit()
+    print(msgRoot.as_string()) 
 
 
 if __name__ == "__main__":
