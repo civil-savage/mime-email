@@ -6,6 +6,8 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEImage import MIMEImage
 
+
+# Argparse setup
 parser = argparse.ArgumentParser(description='Builds an multi-part html email.')
 parser.add_argument('html_file', action="store", help='A HMTL file that will become the HTML portion the email')
 parser.add_argument('text_file', action="store", help='A text file that will become the text portion of the email')
@@ -14,7 +16,7 @@ args = parser.parse_args()
 
 HTML_FILE = args.html_file
 TEXT_FILE = args.text_file
-IMAGES    = args.i
+IMAGES    = args.images
 
 def main():
     msgRoot = MIMEMultipart('alternative')
