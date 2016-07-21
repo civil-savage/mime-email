@@ -17,3 +17,4 @@ Possible avenues for future development.
  * Add possible preview mode (as suggested in the prototype).
 
 
+Also included a little shell script for mailing via thunderbird from the commandline.
